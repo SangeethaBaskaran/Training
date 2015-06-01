@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="mysheet.css">
+        <script src="jquery-1.11.3.min.js"></script>
+    </head>
+    <body onload="namefocus()">
+         <p id="error" style="color:red;"></p>
+        <label>Name</label><input id="name" type="text" placeholder="Enter your name here"  class="ip" >
+        <div id="c1" style="display: none">
+            <label >Gender</label><select id="list1">
+                <option id="male">Male</option>
+                <option id="female">Female</option>
+                <option id="other">Other</option>
+            </select></div>
+        
+        <div id="email"></div>
+        <div id="cemail"></div>
+        <div id="pswd"></div>
+        <div id="cpswd"></div>
+        <label></label>
+        <button id="next">Next</button>
+        <button id="cancel">cancel</button>
+        <div id="buttons" style="visibility: hidden">
+            <button id="submit" onclick="validate()" >submit</button>            
+            <button id="reset" onclick="reload()">reset</button>         
+        </div>
+       
+        <script>
+            var flag1,flag2;
+            function namefocus(){
+                $("name").focus();
+            }
+            
+            $(next).click(function() {
+                try{
+                if ($("#name").val()!=="") {
+                    if($("#c1").css("display")==='inline'){
+                    if($("#list1").val()==="Female"){
+                       $(next).css("display","none");
+                       create();
+                    } else {
+                        document.write("Not applicable");
+                    }}
+                 $("#c1").css("display","inline");
+                } else {
+                    throw "name should not be empty!!";
+                }}catch(err){
+                $(error).html(err);
+                }
+                           
+            });
+            
+            $(cancel).click(function(){
+                document.write("Oops!!!! You have canceled !!!");
+            });
+           $(reset).click(function(){
+                location.reload();
+            });
+            
+            function check(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "should not be empty!!";
+                }else{
+                    if($(e2)[0]===$(el)[0]){
+                        if(!el.value.toString().match(".*@.*\..*")){                    
+                 $("#e1").focus();
+                 throw "invalid email format";
+                 }
+                    }
+                    if($(e2)===$(el)[0]||$(e1)[0]===$(el)[0]){
+                        if($("#e1").val()!==$("#e2").val()){
+                        $("#e1").focus();
+                        throw "email and confirm email should be same";                           
+                        }
+                    }else if($(p2)[0]===$(el)[0]||$(p1)[0]===$(el)[0]){
+                        if($("#p1").val()!==$("#p2").val()){
+                             $("#p1").focus();
+                        throw "password and confirm password should be same";                           
+                        }}else{
+                            throw " "; 
+                        }
+                    throw " "; 
+                }
+                }catch(err){               
+                $(error).html(err);
+                }
+            }
+            
+            function checkmail(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "email should not be empty!!";
+                   
+                }else{
+                    
+                   if(flag1!==1&&el.value.toString().match(".*@.*\..*")){
+                var mail = $("#cemail");              
+                mail.append("<label>confirm email</label>");   
+                var ipbox1 = $("<input></input>").attr({
+                    "placeholder": "re-enter your email",
+                    "class": "ip",
+                    "id": "e2",
+                    "onblur":"check(this)"
+                });               
+                mail.append(ipbox1);
+                $("#e2").focus();
+                flag1=1;
+                throw " ";
+             }else if(el.value.toString().match(".*@.*..*")){
+             
+                 throw " ";}else{
+                 $("#e1").focus();
+                 throw "invalid email format";
+                 }
+             }
+                }catch(err){
+                $(error).html(err);
+                }
+            }
+            
+            function checkpswd(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "password should not be empty!!";                  
+                }else{                   
+                   if(flag2!==1){                       
+                var mail = $("#cpswd");              
+                mail.append("<label>confirm password</label>");
+                        var ipbox1 = $("<input></input>").attr({
+                    "placeholder": "re-enter your password",
+                    "class": "ip",
+                    "id": "p2",
+                    "type":"password",
+                    "onblur":"check(this)"
+                });               
+                mail.append(ipbox1);
+                $("#p2").focus();
+                 flag2=1;
+                }
+                 throw " ";
+                }}catch(err){
+                $(error).html(err);
+                }
+            }
+            
+            function validate(){
+                var x;
+                var inputbox=$(".ip");
+                    $('.ip').each(function(i, obj) {
+    if($(this).val()===""){
+        x=120;
+    }
+});
+//                    for(var i=0;i<inputbox.length;i++){
+//                         if(inputbox.item(i).value==null||inputbox.item(i).value==""){
+//                             var x=120;
+//                             break;
+//                         }
+                    
+                    if(x===120){
+                         $("#error").html("fill all values");
+                    }else if($("#e1").val()!==$("#e2").val()){
+                        $("#error").html("Email and confirm email should be same");
+                        $("#e1").focus();
+                    }else if($("#p1").val()!==$("#p2").val()){
+                        $("error").html("password and confirm password should be same");
+                    $("#p1").focus();
+            }else if(x!==120){
+                       document.write("Thankyou!!!");        
+                   }
+                
+            }
+            function create(){
+                $("#buttons").css("visibility","visible");
+                var mail=$("#email");
+                mail.append("<label>email</label>");
+                var ipbox = $("<input></input>").attr({
+                    "placeholder": "enter your email",
+                    "class": "ip",
+                    "id": "e1",
+                    "onblur":"checkmail(this)"
+                });
+                mail.append(ipbox);  
+                
+                               
+                mail = $("#pswd");                        
+                mail.append("<label>password</label>");                       
+                var ipbox1 = $("<input></input>").attr({
+                    "placeholder": "enter your password",
+                    "class": "ip",
+                    "id": "p1",
+                    "type":"password",
+                    "onblur":"checkpswd(this)"
+                });
+                mail.append(ipbox1); 
+                $("#e1").focus();
+            }
+
+
+        </script>
+    </body>
+</html>

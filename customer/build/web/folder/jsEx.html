@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="mysheet.css">
+    </head>
+    <body onload="namefocus()">
+         <p id="error" style="color:red;"></p>
+        <label>Name</label><input id="name" type="text" placeholder="Enter your name here"  class="ip" onblur="check(this)" >
+        <div id="c1" style="display: none">
+            <label >Gender</label><select id="list1">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select></div>
+        
+        <div id="email"></div>
+        <div id="cemail"></div>
+        <div id="pswd"></div>
+        <div id="cpswd"></div>
+        <label></label>
+        <button id="next" onclick="dispGender()">Next</button>
+        <button id="cancel" onclick="clearAll()">cancel</button>
+        <div id="buttons" style="visibility: hidden">
+            <button id="submit" onclick="validate()" >submit</button>            
+            <button id="reset" onclick="reload()">reset</button>         
+        </div>
+       
+        <script>
+            var flag1,flag2;
+            function namefocus(){
+                document.getElementById("name").focus();
+            }
+            function dispGender() {
+                try{
+                if (document.getElementById("name").value!=="") {
+                   
+                    if(document.getElementById("c1").style.display==='inline'){
+                    if(document.getElementById("list1").selectedIndex===1){
+                       document.getElementById("next").display='none';
+                       create();
+                    } else {
+                        document.write("Not applicable");
+                    }}
+                 document.getElementById("c1").style.display='inline' ;
+                } else {
+                    throw "name should not be empty!!";
+                }}catch(err){
+                document.getElementById("error").innerHTML=err;
+                }
+                           
+            }
+            function clearAll(){
+                document.write("Oops!!!! You have canceled !!!");
+            } 
+            function reload(){
+                location.reload();
+            }
+            
+            function check(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "should not be empty!!";
+                }else{
+                    if(document.getElementById("e2")===el){
+                        if(!el.value.toString().match(".*@.*..*")){                    
+                 document.getElementById("e2").focus();
+                 throw "invalid email format";
+                 }
+                    }
+                    if(document.getElementById("e2")===el||document.getElementById("e1")===el){
+                        if(document.getElementById("e1").value!==document.getElementById("e2").value){
+                        document.getElementById("e1").focus();
+                        throw "email and confirm email should be same";                           
+                        }else{
+                            throw " "; 
+                        }
+                    }else if(document.getElementById("p2")===el||document.getElementById("p1")===el){
+                        if(document.getElementById("p1").value!==document.getElementById("p2").value){
+                             document.getElementById("p1").focus();
+                        throw "password and confirm password should be same";                           
+                        }else{
+                            throw " "; 
+                        }}
+                    throw " "; 
+                }
+                }catch(err){               
+                document.getElementById("error").innerHTML=err;
+                }
+            }
+            
+            function checkmail(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "email should not be empty!!";
+                   
+                }else{
+                    
+                   if(flag1!==1&&el.value.toString().match(".*@.*..*")){
+                var mail = document.getElementById("cemail");              
+                var label2=document.createElement("label");
+                var ltext=document.createTextNode("confirm email"); 
+                label2.appendChild(ltext);
+                mail.appendChild(label2);
+                        
+                var ipbox1=document.createElement("input");
+                ipbox1.setAttribute("placeholder", "re-enter your email");
+                ipbox1.setAttribute("class", "ip"); 
+                ipbox1.setAttribute("id", "e2");
+                ipbox1.setAttribute("onblur","check(this)");              
+                mail.appendChild(ipbox1);
+                document.getElementById("e2").focus();
+                 flag1=1;
+                 throw " ";
+             }else if(el.value.toString().match(".*@.*..*")){
+             
+                 throw " ";}else{
+                 document.getElementById("e1").focus();
+                 throw "invalid email format";
+                 }
+             }
+                }catch(err){
+                document.getElementById("error").innerHTML=err;
+                }
+            }
+            
+            function checkpswd(el){
+                try{
+                if(el.value===""){
+                    el.focus();
+                   throw "password should not be empty!!";
+                   
+                }else{
+                    
+                   if(flag2!==1){
+                       
+                var mail = document.getElementById("cpswd");              
+                var label2=document.createElement("label");
+                var ltext=document.createTextNode("confirm password"); 
+                label2.appendChild(ltext);
+                mail.appendChild(label2);
+                        
+                var ipbox1=document.createElement("input");
+                ipbox1.setAttribute("placeholder", "re-enter your password");
+                ipbox1.setAttribute("class", "ip"); 
+                ipbox1.setAttribute("id", "p2");
+                ipbox1.setAttribute("type","password");                
+                ipbox1.setAttribute("onblur","check(this)");              
+                mail.appendChild(ipbox1);
+                document.getElementById("p2").focus();
+                 flag2=1;
+                }
+                 throw " ";
+                }}catch(err){
+                document.getElementById("error").innerHTML=err;
+                }
+            }
+            
+            function validate(){
+                var y;
+                if(document.getElementById("cemail").style.visibility==='hidden'){
+                    document.getElementById("cemail").style.visibility='visible';
+                    document.getElementById("cpswd").style.visibility='visible';
+                }else{
+                    var inputbox=document.getElementsByClassName("ip");
+                    for(var i=0;i<inputbox.length;i++){
+                         if(inputbox.item(i).value==null||inputbox.item(i).value==""){
+                             var x=120;
+                             break;
+                         }
+                    }
+                    if(x===120){
+                          document.getElementById("error").innerHTML="Enter all values";
+                    }else if(document.getElementById("e1").value!==document.getElementById("e2").value){
+                        document.getElementById("error").innerHTML="Email and confirm email should be same";
+                        document.getElementById("e1").focus();
+                    }else if(document.getElementById("p1").value!==document.getElementById("p2").value){
+                        document.getElementById("error").innerHTML="password and confirm password should be same";
+                    document.getElementById("p1").focus();
+            }else if(x!==120){
+                       document.write("Thankyou!!!");        
+                   }
+                }
+            }
+            function create(){
+                document.getElementById("buttons").style.display='inline';
+                document.getElementById("next").style.display='none';
+                 var mail = document.getElementById("email");
+                 
+                 var label = document.createElement("label");
+                 var ltext = document.createTextNode("email"); 
+                 label.appendChild(ltext);                
+                 mail.appendChild(label);
+                 
+                 
+                var ipbox = document.createElement("input");
+                ipbox.setAttribute("placeholder", "enter your email");
+                ipbox.setAttribute("class", "ip");
+                ipbox.setAttribute("id", "e1");
+                ipbox.setAttribute("onblur","checkmail(this)");
+                mail.appendChild(ipbox);  
+                document.getElementById("e1").focus();
+               
+                
+                mail = document.getElementById("pswd");
+                
+                label2=label.cloneNode();
+                ltext=document.createTextNode("password"); 
+                label2.appendChild(ltext);
+                mail.appendChild(label2);
+                        
+                ipbox1=ipbox.cloneNode();
+                ipbox1.setAttribute("placeholder", "enter your password");
+                ipbox1.setAttribute("class", "ip");
+                ipbox1.setAttribute("type", "password");
+                ipbox1.setAttribute("onblur","checkpswd(this)");
+                ipbox1.setAttribute("id", "p1");
+                mail.appendChild(ipbox1);                
+                document.getElementById("buttons").style.visibility='visible';
+            }
+
+
+        </script>
+    </body>
+</html>
