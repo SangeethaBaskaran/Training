@@ -1,0 +1,2 @@
+# Training
+Contains training exercises
